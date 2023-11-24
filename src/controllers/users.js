@@ -1,62 +1,73 @@
 const User = require('../models/user');
 
 // Получим всех пользователей из БД
-const getUsers = (req, res) => {
+const getUsers = (request, response) => {
     User.find({})
         .then(user => {
-            res.status(200).send(user);
+            response.status(200).send(user);
         })
         .catch(e => {
-            res.status(500).send(e.message);
+            response.status(500).send(e.message);
         });
 }
 
 // Получим пользователя по ID
-const getUser = (req, res) => {
-    const { user_id } = req.params;
-    User.findById(user_id)
-        .then(user => {
-            res.status(200).send(user);
-        })
+const getUser =  (request, response) => {
+    const { user_id } = request.params;
+    User.findById(user_id).then(
+        (user) => {
+            if (!user) response.status(404).send("user not found")
+            else response.status(200).send(user)
+        }
+        )
         .catch(e => {
-            res.status(500).send(e.message);
+            response.status(500).send(e.message);
         });
 }
 
 // Создаем пользователя
-const createUser = (req, res) => {
-    const data = req.body;
+const createUser = (request, response) => {
+    const data = request.body;
     User.create(data)
-        .then(user => {
-            res.status(201).send(user);
-        })
+        .then(
+            user => {
+            response.status(201).send(user);
+        }
+        )
         .catch(e => {
-            res.status(500).send(e.message);
+            response.status(500).send(e.message);
         });
 }
 
 // Обновляем пользователя
-const updateUser = (req, res) => {
-    const { user_id } = req.params;
-    const data = req.body;
+const updateUser = (request, response) => {
+    const { user_id } = request.params;
+    const data = request.body;
     User.findByIdAndUpdate(user_id, data, { new: true, runValidators: true })
-        .then(user => {
-            res.status(200).send(user);
-        })
+        .then(
+            (user) => {
+                if (!user) response.status(404).send("cannot update")
+                else response.status(200).send(user)
+               }
+        
+        )
         .catch(e => {
-            res.status(500).send(e.message);
+            response.status(500).send(e.message);
         });
 }
 
 // Удаляем пользователя
-const deleteUser = (req, res) => {
-    const { user_id } = req.params;
+const deleteUser = (request, response) => {
+    const { user_id } = request.params;
     User.findByIdAndDelete(user_id)
-        .then(user => {
-            res.status(200).send("Done");
-        })
+        .then(
+            (user) => {
+                if (!user) response.status(404).send("cannot delete")
+                else response.status(200).send("sucess")
+               }
+        )
         .catch(e => {
-            res.status(500).send(e.message);
+            response.status(500).send(e.message);
         });
 }
 

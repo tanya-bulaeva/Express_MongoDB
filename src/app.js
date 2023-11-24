@@ -5,7 +5,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const userRouter = require('./routes/users');
 const bookRouter = require('./routes/books');
-const loggerOne = require('./middlewares/loggerOne')
+const logger = require('./middlewares/logger')
 
 dotenv.config();
 const {
@@ -24,7 +24,7 @@ const helloWorld = (request, response) => {
     response.send("Hello, World!");
 }
 app.use(cors());
-app.use(loggerOne);
+app.use(logger);
 app.use(bodyParser.json());
 
 app.get('/', helloWorld);
@@ -38,7 +38,6 @@ app.post('/', (request, response) => {
 
 app.use(userRouter);
 app.use(bookRouter);
-
 app.listen(PORT, () => {
     console.log(`Сервер запущен по адресу ${API_URL}:${PORT}`);
 });

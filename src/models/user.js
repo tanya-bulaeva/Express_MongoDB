@@ -16,10 +16,6 @@ lastName: {
     required: true,
     minlength: 5,
   },
-  books: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'book' }],
-    default: [],
-  }
 });
 
 module.exports = mongoose.model('user', userSchema);

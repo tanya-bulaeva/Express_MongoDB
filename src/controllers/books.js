@@ -1,39 +1,54 @@
 const Book = require('../models/book')
-const getBooks = (request, response) => {
-    //get all users
-    return Book.find({}).then(
-        () => {response.status(200).send(data)}
-    ).catch(e =>  response.status(500).send(e.message))
+const getBooks =  (request, response) => {
+    //get all books
+    Book.find({})
+        .then(book => {
+            response.status(200).send(book);
+        })
+        .catch(e => {
+            response.status(500).send(e.message);
+        });
 }
 
 const getBook = (request, response) => {
-    //get user
+    //get book
        const {book_id} = request.params;
        return Book.findById(book_id).then(
-        (book) => {response.status(200).send(book)}
+        (book) => {
+        if (!book) response.status(404).send("book not found")
+        else response.status(200).send(book)
+       }
+
     ).catch(e =>  response.status(500).send(e.message))
 }
 
 const createBook = (request, response) => {
-    //create new user
+    //create new book
     return Book.create({...request.body}).then(
         (book) => {response.status(201).send(book)}
+        
     ).catch(e =>  response.status(500).send(e.message))
 }
 
 const updateBook = (request, response) => {
-    //update user
+    //update book
     const {book_id} = request.params;
-    return User.findByIdAndUpdate(book_id, {...request.body}).then(
-     (book) => {response.status(200).send(book)}
+    return Book.findByIdAndUpdate(book_id, {...request.body}).then(
+     (book) => {
+        if (!book) response.status(404).send("cannot update")
+        else response.status(200).send(book)
+       }
  ).catch(e =>  response.status(500).send(e.message))
 }
 
 const deleteBook = (request, response) => {
-    //delete user
+    //delete book
     const {book_id} = request.params;
     return Book.findByIdAndDelete(book_id).then(
-     (book) => {response.status(200).send("sucess")}
+     (book) => {
+        if (!book) response.status(404).send("cannot delete")
+        else response.status(200).send("sucess")
+       }
  ).catch(e =>  response.status(500).send(e.message))
 }
 
