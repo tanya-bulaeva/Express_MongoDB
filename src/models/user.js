@@ -6,27 +6,20 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 2,
   },
+lastName: {
+    type: String,
+    required: true,
+    minlength: 2,
+  },
   username: {
     type: String,
     required: true,
-    minlength: 2,
+    minlength: 5,
   },
-  email: {
-    type: String,
-    required: true,
-    minlength: 2,
-  },
+  books: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'book' }],
+    default: [],
+  }
 });
 
 module.exports = mongoose.model('user', userSchema);
-
-// lastName: {
-//     type: String,
-//     required: true,
-//     minlength: 2,
-//   },
-//   username: {
-//     type: String,
-//     required: true,
-//     minlength: 5,
-//   },

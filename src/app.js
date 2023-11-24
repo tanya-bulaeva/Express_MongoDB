@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const userRouter = require('./routes/users');
+const bookRouter = require('./routes/books');
 const loggerOne = require('./middlewares/loggerOne')
 
 dotenv.config();
@@ -13,7 +14,7 @@ const {
     MONGO_URL = "mongodb://localhost:27017/test"
 } = process.env;
 
-mongoose.connect(MONGO_URL).catch((error) => console.log("[MONGO_CONNECTION]", error));
+mongoose.connect(MONGO_URL).then (() => console.log("Connected to Mongo!")).catch((error) => console.log("[MONGO_CONNECTION]", error));
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.post('/', (request, response) => {
 
 
 app.use(userRouter);
+app.use(bookRouter);
 
 app.listen(PORT, () => {
     console.log(`Сервер запущен по адресу ${API_URL}:${PORT}`);
