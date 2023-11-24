@@ -10,10 +10,10 @@ dotenv.config();
 const {
     PORT  = 3000 ,
     API_URL = "http://127.0.0.1",
-    MONGO_URL = "mongodb://localhost:27017/backend"
+    MONGO_URL = "mongodb://localhost:27017/test"
 } = process.env;
 
-mongoose.connect(MONGO_URL)
+mongoose.connect(MONGO_URL).catch((error) => console.log("[MONGO_CONNECTION]", error));
 
 const app = express();
 
